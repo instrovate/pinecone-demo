@@ -1,19 +1,21 @@
 import streamlit as st
-import os
-import pinecone_client
+# No need for 'os' if all secrets are handled by st.secrets
+# No need for 'dotenv' if all secrets are handled by st.secrets
+from pinecone import Pinecone, Index
 import openai
-from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
-pinecone_api_key = os.getenv("PINECONE_API_KEY")
-pinecone_env = os.getenv("PINECONE_ENV")
-pinecone_index = os.getenv("PINECONE_INDEX")
+# Load environment variables from Streamlit secrets
+# Streamlit automatically makes secrets available via st.secrets
+openai.api_key = st.secrets["OPENAI_API_KEY"]
+pinecone_api_key = st.secrets["PINECONE_API_KEY"]
+pinecone_env = st.secrets["PINECONE_ENV"] # Still good to retrieve if used for clarity or other purposes
+pinecone_index = st.secrets["PINECONE_INDEX"]
 
 # Initialize Pinecone
-pinecone.init(api_key=pinecone_api_key, environment=pinecone_env)
-index = pinecone.Index(pinecone_index)
+pc = Pinecone(api_key=pinecone_api_key)
+
+# Connect to the index
+index = pc.Index(pinecone_index)
 
 # UI
 st.title("🔍 RAG App with Pinecone Vector DB")
