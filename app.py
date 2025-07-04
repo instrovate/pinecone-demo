@@ -1,6 +1,6 @@
 import streamlit as st
 import os
-import pinecone
+import pinecone_client
 import openai
 from dotenv import load_dotenv
 
